@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { catchError } from 'rxjs/internal/operators';
+import { catchError } from 'rxjs/operators';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -71,38 +71,30 @@ export class userRegistration {
   }
 }
 
-//user login
-export class userLogin {
+// User login
+@Injectable({
+  providedIn: 'root',
+})
+export class UserLoginService {
   constructor(private http: HttpClient) { }
 
-  userLogin(): Observable<any> {
-    const token = localStorage.getItem('token');
-    return this.http.get(apiUrl + '/users/:username', {
-      headers: new HttpHeaders(
-        {
-          Authorization: 'Bearer ' + token,
-        }
-      )
-    }).pipe(
-      map(this.extractResponseData),
-      catchError(this.handleError)
-    );
+  //Making the api call for the user login endpoint
+  public userLogin(userDetails: any): Observable<any> {
+    console.log(userDetails);
+    return this.http
+      .post(apiUrl + 'login', userDetails)
+      .pipe(catchError(this.handleError));
   }
-  // Non-typed response extraction
-  private extractResponseData(res: Response | Object): any {
-    const body = res;
-    return body || {};
-  }
+
   private handleError(error: HttpErrorResponse): any {
     if (error.error instanceof ErrorEvent) {
       console.error('Some error occurred:', error.error.message);
     } else {
       console.error(
-        `Error Status code ${error.status}, ` +
-        `Error body is: ${error.error}`);
+        `Error Status code ${error.status}, ` + `Error body is: ${error.error}`
+      );
     }
-    return throwError(
-      'Huh, looks like you are new here, try to register instead: please try again later.');
+    return throwError('Something bad happened; please try again later.');
   }
 }
 
