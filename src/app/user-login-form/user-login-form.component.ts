@@ -1,10 +1,12 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Router } from '@angular/router';
 
-import { UserLoginService } from '../fetch-api-data.service';
+// API call
+import { FetchApiDataService } from '../fetch-api-data.service';
 
+// Angular material
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
 
 
 @Component({
@@ -13,11 +15,12 @@ import { Router } from '@angular/router';
   styleUrls: ['./user-login-form.component.scss']
 })
 export class UserLoginFormComponent implements OnInit {
+  isLoading = false;
 
-  @Input() userData = { Username: '', Password: '' };
+  @Input() userData = { username: '', password: '' };
 
   constructor(
-    public fetchApiData: UserLoginService,
+    public fetchApiData: FetchApiDataService,
     public dialogRef: MatDialogRef<UserLoginFormComponent>,
     public snackBar: MatSnackBar,
     public router: Router
@@ -26,18 +29,21 @@ export class UserLoginFormComponent implements OnInit {
   ngOnInit(): void { }
 
   /**
-   * function to login user
+   * login user
    */
   loginUser(): void {
+    this.isLoading = true;
     this.fetchApiData.userLogin(this.userData).subscribe((response) => {
+      this.isLoading = true;
       this.dialogRef.close();
-      localStorage.setItem('user', response.user.Username);
+      localStorage.setItem('user', response.user.username);
       localStorage.setItem('token', response.token);
       this.snackBar.open('User logged in successfully!', 'OK', {
         duration: 2000
       });
       this.router.navigate(['movies']);
     }, (response) => {
+      this.isLoading = true;
       console.log(response);
       this.snackBar.open(response, 'OK', {
         duration: 2000
