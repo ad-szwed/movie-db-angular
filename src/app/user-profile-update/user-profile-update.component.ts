@@ -15,6 +15,12 @@ import { FetchApiDataService } from '../fetch-api-data.service';
 export class UserProfileUpdateComponent implements OnInit {
   @Input() userData = { username: '', password: '', email: '', birthday: '' };
 
+  /**
+   *
+   * @param fetchUserData
+   * @param dialogRef
+   * @param snackBar
+   */
   constructor(
     public fetchUserData: FetchApiDataService,
     public dialogRef: MatDialogRef<UserProfileUpdateComponent>,

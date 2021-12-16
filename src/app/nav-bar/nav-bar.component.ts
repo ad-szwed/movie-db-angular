@@ -12,6 +12,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class NavBarComponent implements OnInit {
 
+  /**
+   * @param snackBar
+   * @param router
+   */
   constructor(
     public snackBar: MatSnackBar,
     public router: Router
@@ -23,7 +27,7 @@ export class NavBarComponent implements OnInit {
   /**
   * Log user out
   **/
-   logOutUser(): void {
+  logOutUser(): void {
     localStorage.clear;
     this.router.navigate(['welcome']);
     this.snackBar.open('You have logged out', 'OK', {

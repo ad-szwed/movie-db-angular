@@ -11,8 +11,11 @@ const apiUrl = 'https://szwedshop-moviedb.herokuapp.com/';
   providedIn: 'root'
 })
 export class FetchApiDataService {
-  //Inject the HttpClient module to the constructor params
-  //This will provide HttpClient to the entire class, making it available via this.http
+  /**
+   *
+   * @param http
+   * @param router
+   */
   constructor(private http: HttpClient, private router: Router) { }
 
   // Non-typed response extraction
@@ -22,8 +25,10 @@ export class FetchApiDataService {
   }
 
   /**
-  * Register a new user
-  **/
+   * API call to register new user account
+   * @param userDetails
+   * @returns
+   */
   public userRegistration(userDetails: any): Observable<any> {
     console.log(userDetails);
     return this.http.post(apiUrl + 'users', userDetails).pipe(
@@ -31,6 +36,11 @@ export class FetchApiDataService {
     );
   }
 
+  /**
+   * Handles errors to register new user account
+   * @param error
+   * @returns
+   */
   private userRegistrationHandleError(error: HttpErrorResponse): any {
     if (error.error instanceof ErrorEvent) {
       console.error('Some error occurred:', error.error.message);
@@ -48,8 +58,10 @@ export class FetchApiDataService {
   }
 
   /**
-  * Login user
-  **/
+   * Handles user login HTTP request
+   * @param userDetails
+   * @returns
+   */
   public userLogin(userDetails: any): Observable<any> {
     console.log(userDetails);
     return this.http
@@ -57,6 +69,11 @@ export class FetchApiDataService {
       .pipe(catchError(this.userLoginHandleError));
   }
 
+  /**
+   * Handles errors for user login HTTP request
+   * @param error
+   * @returns
+   */
   private userLoginHandleError(error: HttpErrorResponse): any {
     if (error.error instanceof ErrorEvent) {
       console.error('Some error occurred:', error.error.message);
@@ -69,8 +86,9 @@ export class FetchApiDataService {
   }
 
   /**
-  * Return all movies in database
-  **/
+   * API call to fetch all movies in database
+   * @returns
+   */
   getAllMovies(): Observable<any> {
     const token = localStorage.getItem('token');
     return this.http.get(apiUrl + 'movies', {
@@ -85,6 +103,11 @@ export class FetchApiDataService {
 
   }
 
+  /**
+   * Handles errors to fetch all movies in database
+   * @param error
+   * @returns
+   */
   private getAllMoviesHandleError(error: HttpErrorResponse): any {
     if (error.error instanceof ErrorEvent) {
       console.error('Some error occurred:', error.error.message);
@@ -97,8 +120,10 @@ export class FetchApiDataService {
   }
 
   /**
-  * Return user account info
-  **/
+   * Calls API to get user account information
+   * @param user
+   * @returns
+   */
   getUser(user: any): Observable<any> {
     const token = localStorage.getItem('token');
     return this.http
@@ -110,6 +135,11 @@ export class FetchApiDataService {
       .pipe(map(this.extractResponseData), catchError(this.getUserHandleError));
   }
 
+  /**
+   * Handles errors to get user account information
+   * @param error
+   * @returns
+   */
   private getUserHandleError(error: HttpErrorResponse): any {
     if (error.error instanceof ErrorEvent) {
       console.error('Some error occurred:', error.error.message);
@@ -122,8 +152,10 @@ export class FetchApiDataService {
   }
 
   /**
-  * Add movies to favorites
-  **/
+   * API call to add movie to user's list of favorites
+   * @param id
+   * @returns
+   */
   addFavorite(id: string): Observable<any> {
     const token = localStorage.getItem('token');
     const user = localStorage.getItem('user');
@@ -138,6 +170,11 @@ export class FetchApiDataService {
     );
   }
 
+  /**
+   * Handles errors to add movie to user's list of favorites
+   * @param error
+   * @returns
+   */
   private addFavoriteHandleError(error: HttpErrorResponse): any {
     if (error.error instanceof ErrorEvent) {
       console.error('Some error occurred:', error.error.message);
@@ -150,8 +187,10 @@ export class FetchApiDataService {
   }
 
   /**
-  * Remove movies from favorites
-  **/
+   * API call to remove movie from user's list of favorites
+   * @param id
+   * @returns
+   */
   removeFavorite(id: string): Observable<any> {
     const token = localStorage.getItem('token');
     const user = localStorage.getItem('user');
@@ -166,6 +205,11 @@ export class FetchApiDataService {
     );
   }
 
+  /**
+   * Handles errors to remove movie from user's list of favorites
+   * @param error
+   * @returns
+   */
   private removeFavoriteHandleError(error: HttpErrorResponse): any {
     if (error.error instanceof ErrorEvent) {
       console.error('Some error occurred:', error.error.message);
@@ -178,8 +222,9 @@ export class FetchApiDataService {
   }
 
   /**
-  * Movie Synopsis
-  **/
+   * API call to get movie by title
+   * @returns
+   */
   getMovieByTitle(): Observable<any> {
     const token = localStorage.getItem('token');
     return this.http.get(apiUrl + 'movies/:Title', {
@@ -193,6 +238,11 @@ export class FetchApiDataService {
     );
   }
 
+  /**
+   * Handles errors to get movie by title
+   * @param error
+   * @returns
+   */
   private getMovieByTitleHandleError(error: HttpErrorResponse): any {
     if (error.error instanceof ErrorEvent) {
       console.error('Some error occurred:', error.error.message);
@@ -205,8 +255,9 @@ export class FetchApiDataService {
   }
 
   /**
-  * Director View
-  **/
+   * API call to get director information
+   * @returns
+   */
   getDirector(): Observable<any> {
     const token = localStorage.getItem('token');
     return this.http.get(apiUrl + 'movies/director/:name', {
@@ -220,6 +271,11 @@ export class FetchApiDataService {
     );
   }
 
+  /**
+   * Handles errors to get director information
+   * @param error
+   * @returns
+   */
   private getDirectorHandleError(error: HttpErrorResponse): any {
     if (error.error instanceof ErrorEvent) {
       console.error('Some error occurred:', error.error.message);
@@ -232,9 +288,9 @@ export class FetchApiDataService {
   }
 
   /**
-  * Genre View
-  **/
-
+   * API call to get genre information
+   * @returns
+   */
   getGenre(): Observable<any> {
     const token = localStorage.getItem('token');
     return this.http.get(apiUrl + 'movies/genre/:name', {
@@ -248,6 +304,11 @@ export class FetchApiDataService {
     );
   }
 
+  /**
+   * Handles errors to get genre information
+   * @param error
+   * @returns
+   */
   private getGenreHandleError(error: HttpErrorResponse): any {
     if (error.error instanceof ErrorEvent) {
       console.error('Some error occurred:', error.error.message);
@@ -260,9 +321,10 @@ export class FetchApiDataService {
   }
 
   /**
-  * Edit User
-  **/
-
+   * API call to edit user account details
+   * @param userDetails
+   * @returns
+   */
   editUser(userDetails: any): Observable<any> {
     const token = localStorage.getItem('token');
     const user = localStorage.getItem('user');
@@ -277,6 +339,11 @@ export class FetchApiDataService {
     );
   }
 
+  /**
+   * Handles errors to edit user account details
+   * @param error
+   * @returns
+   */
   private editUserHandleError(error: HttpErrorResponse): any {
     if (error.error instanceof ErrorEvent) {
       console.error('Some error occurred:', error.error.message);
@@ -289,8 +356,9 @@ export class FetchApiDataService {
   }
 
   /**
-  * Delete User
-  **/
+   * API call to remove user account
+   * @returns
+   */
   deleteUser(): Observable<any> {
     const token = localStorage.getItem('token');
     const user = localStorage.getItem('user');
@@ -305,6 +373,11 @@ export class FetchApiDataService {
     );
   }
 
+  /**
+   * Handles errors to remove user account
+   * @param error
+   * @returns
+   */
   private deleteUserHandleError(error: HttpErrorResponse): any {
     if (error.error instanceof ErrorEvent) {
       console.error('Some error occurred:', error.error.message);
