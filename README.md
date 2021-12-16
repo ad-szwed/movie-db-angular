@@ -1,4 +1,4 @@
-# movieDB ANGULAR EDITION
+# movieDB ANGULAR EDITION v1.0
 
 This project was created to pass the angular portion of Career Foundry's fullstack dev bootcamp.
 It is a client-side of a movie database application built using Angular with an existing server-side (REST API) and MongoDB database.
